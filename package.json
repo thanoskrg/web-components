@@ -6,13 +6,16 @@
   "scripts": {
     "build": "vite build --outDir build",
     "dev": "vite",
-    "test": "exit 0",
-    "test:watch": "exit 0"
+    "test": "wtr --config test.config.mjs",
+    "test:watch": "wtr --config test.config.mjs --watch"
   },
   "license": "ISC",
   "devDependencies": {
+    "@open-wc/testing": "^3.0.3",
     "@typescript-eslint/eslint-plugin": "^5.5.0",
     "@typescript-eslint/parser": "^5.5.0",
+    "@web/dev-server-esbuild": "^0.2.16",
+    "@web/test-runner": "^0.13.22",
     "eslint": "^8.4.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

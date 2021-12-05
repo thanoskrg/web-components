@@ -1,28 +1,53 @@
 import { LitElement, html, css } from "lit";
 import { property } from "lit/decorators.js";
 
+export type Config = Partial<{ enabled: boolean }>;
+
 export class FooButton extends LitElement {
   @property({ attribute: false })
-  text: string = "SIGN IN";
+  private text: string = "SIGN IN";
 
   @property({ attribute: false })
-  loading: boolean = false;
+  private config: Config = {};
+
+  @property({ attribute: false })
+  private loading: boolean = false;
+
+  private get isDisabled() {
+    return this.config.enabled !== true;
+  }
 
   constructor() {
     super();
   }
 
-  onClick() {
+  private onClick() {
     this.loading = true;
-    setTimeout(() => (this.loading = false), 2000);
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
+  }
+
+  async loadConfig() {
+    const res = await fetch("/config");
+    this.config = await res.json();
+  }
+
+  async connectedCallback() {
+    super.connectedCallback();
+    await this.loadConfig();
   }
 
   render() {
-    const handleClick = this.onClick.bind(this);
+    if (this.isDisabled) {
+      return null;
+    }
 
     if (this.loading) {
       return html`<button>LOADING</button>`;
     }
+
+    const handleClick = this.onClick.bind(this);
 
     return html`<button @click=${handleClick}>
       <span>
